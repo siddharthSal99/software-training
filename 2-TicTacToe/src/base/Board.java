@@ -81,6 +81,10 @@ public class Board {
 			winner = data[2][0];
 			return true;
 		}
+		if(getEmptyCells().isEmpty()) {
+			winner = 'T'; // T for tie
+			return true;
+		}
 		// No winner
 		winner = ' ';
 		return false;

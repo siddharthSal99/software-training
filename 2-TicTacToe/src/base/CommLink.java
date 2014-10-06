@@ -29,11 +29,8 @@ public class CommLink {
 			}
 		}
 		try {
-			Sound.playNote(Sound.XYLOPHONE, 500, 250);
 			ostream.write(message.getBytes());
-			Sound.playNote(Sound.XYLOPHONE, 600, 250);
 			ostream.flush();
-			Sound.playNote(Sound.XYLOPHONE, 700, 250);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
