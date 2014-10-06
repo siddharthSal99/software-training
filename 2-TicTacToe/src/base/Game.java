@@ -1,9 +1,9 @@
 package base;
 
 public class Game {
-	Board board;
-	int moveCount;
-	char[] players = {'X', 'O'};
+	private Board board;
+	private int moveCount;
+	private char[] players = {'X', 'O'};
 	
 	public Game() {
 		board = new Board();
@@ -16,6 +16,7 @@ public class Game {
 	
 	public void makeMove(int row, int col) throws Board.MarkPlacementException {
 		board.mark(row, col, players[moveCount%players.length]);
+		moveCount++;
 	}
 	
 	public char getCurrentPlayerMarking() {
@@ -28,5 +29,9 @@ public class Game {
 	
 	public char getWinner() {
 		return board.getWinner();
+	}
+	
+	public Board getBoard() {
+		return board;
 	}
 }

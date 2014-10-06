@@ -1,12 +1,15 @@
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
 import lejos.pc.comm.NXTComm;
@@ -31,11 +34,13 @@ public class MainFrame extends JFrame {
 		
 		for(int r = 0; r < 3; r++) {
 			for(int c = 0; c < 3; c++) {
-				labels[r][c] = new JLabel("-");
+				labels[r][c] = new JLabel("-", SwingConstants.CENTER);
+				labels[r][c].setBorder(BorderFactory.createLineBorder(Color.black, 1));
 				add(labels[r][c]);
 			}
 		}
 		pack();
+		setSize(400, 400);
 		
 		try {
 			nxtComm = NXTCommFactory.createNXTComm(NXTCommFactory.USB);
@@ -59,10 +64,10 @@ public class MainFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					if(istream.available() > 0) {
-						byte[] data = new byte[100];
-						int numbytes = istream.read(data);
-						System.out.println("got data");
+					byte[] data = new byte[100];
+					int numbytes = istream.read(data);
+					System.out.println(numbytes + " bytes received.");
+					if(numbytes > 0) {
 						boolean started = false;
 						int elemCount = 0;
 						for(int i = 0; i < numbytes; i++) {
@@ -76,6 +81,9 @@ public class MainFrame extends JFrame {
 									started = false;
 							}
 						}
+					} else if(numbytes == -1) {
+						System.err.println("NXT Disconnected?");
+						timer.stop();
 					}
 				} catch(Exception exc) {
 					exc.printStackTrace();
@@ -90,8 +98,11 @@ public class MainFrame extends JFrame {
 	public static void main(String[] args) {
 		MainFrame frame = new MainFrame();
 		frame.setVisible(true);
-		while(frame.isVisible()) { }
-		frame.timer.stop();
+		while(frame.isVisible() && frame.timer.isRunning()) { }
+		if(frame.timer.isRunning())
+			frame.timer.stop();
+		if(frame.isVisible())
+			frame.setVisible(false);
 		try {
 			frame.nxtComm.close();
 		} catch (IOException e) {

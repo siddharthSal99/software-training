@@ -22,7 +22,7 @@ public class Robot {
 		arm = new NXTRegulatedMotor(MotorPort.B);
 		arm.setSpeed(45);
 		lightSensor = new LightSensor(SensorPort.S1);
-		lightThreshold = 400;
+		lightThreshold = 450;
 	}
 	
 	public void moveArmUp() {
@@ -56,11 +56,11 @@ public class Robot {
 	private int angleForColumn(int col) {
 		switch(col) {
 		case 0:
-			return 720;
+			return -700;
 		case 1:
 			return 0;
 		case 2:
-			return -720;
+			return 700;
 		default:
 			return 0;
 		}

@@ -16,6 +16,7 @@ public class Main {
 		robot = new Robot();
 		game = new Game();
 		generator = gen;
+		comm = new CommLink();
 	}
 	
 	public static void badSound() {
@@ -23,7 +24,7 @@ public class Main {
 	}
 	
 	public void humansTurn() {
-		List<Point> emptyCells = game.board.getEmptyCells();
+		List<Point> emptyCells = game.getBoard().getEmptyCells();
 		for(Point cell : emptyCells) {
 			robot.moveToCell(cell.row, cell.col, Robot.MoveMode.Read);
 			if(robot.isLightDark()) {
@@ -39,10 +40,11 @@ public class Main {
 			}
 			Sound.playTone(216, 250);
 		}
+		comm.sendBoardState(game.getBoard());
 	}
 	
 	public void robotsTurn() {
-		Point move = generator.getMove(game.board, game.getCurrentPlayerMarking());
+		Point move = generator.getMove(game.getBoard(), game.getCurrentPlayerMarking());
 		try {
 			game.makeMove(move.row, move.col);
 		} catch (Exception e) {
@@ -51,6 +53,7 @@ public class Main {
 			System.exit(1);
 		}
 		robot.moveToCell(move.row, move.col, Robot.MoveMode.Write);
+		comm.sendBoardState(game.getBoard());
 	}
 	
 	public static void main(String[] args) {
@@ -77,6 +80,7 @@ public class Main {
 			System.out.println(e.getClass().toString());
 			Button.waitForAnyPress();
 		}
+		mainInstance.comm.close();
 	}
 
 }

@@ -2,6 +2,7 @@ package base;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import lejos.nxt.Sound;
 import lejos.nxt.comm.USB;
 import lejos.nxt.comm.USBConnection;
 
@@ -28,8 +29,11 @@ public class CommLink {
 			}
 		}
 		try {
+			Sound.playNote(Sound.XYLOPHONE, 500, 250);
 			ostream.write(message.getBytes());
+			Sound.playNote(Sound.XYLOPHONE, 600, 250);
 			ostream.flush();
+			Sound.playNote(Sound.XYLOPHONE, 700, 250);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
