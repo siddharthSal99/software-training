@@ -6,16 +6,16 @@
 BUS=$(lsusb | grep NXT$ | sed 's/.*Bus \([0-9]*\).*/\1/g')
 DEVICE=$(lsusb | grep NXT$ | sed 's/.*Device \([0-9]*\).*/\1/g')
 
-echo Bus and Device aquired!
+echo Bus and Device aquired
 
 # Get the number of NXT entries
 NUMLINES=$(echo $BUS | wc -l)
 
-echo Numlines: $NUMLINES
+echo $NUMLINES NXT Devices found
 
 # Change permissions on all NXT ports
 for i in $(seq 1 $NUMLINES); do
-    echo $i
+    echo Configuring NXT Device: $i
     sudo chmod a+w /dev/bus/usb/"$(echo $BUS | sed -n "${i}p")"/"$(echo $DEVICE | sed -n "${i}p")"
 done;
 
