@@ -1,36 +1,38 @@
 // Import library definitions from header files
+#include <Encoder.h>
+#include <PID_v1.h>
+#include <Adafruit_MCP23017.h>
 #include <Wire.h>
-#include <Ultrasonic.h>
-#include <Motor.h>
-#include <Bricktronics.h>
+#include <BricktronicsMotor.h>
+#include <BricktronicsUltrasonic.h>
+#include <BricktronicsShield.h>
 
 // Declare global variables
-Bricktronics brick;
-Motor left_motor{&brick, 1};
-Motor right_motor{&brick, 2};
-Ultrasonic ultrasonic{&brick, 4};
+BricktronicsMotor left{BricktronicsShield::MOTOR_1};
+BricktronicsMotor right{BricktronicsShield::MOTOR_2};
+BricktronicsUltrasonic ultrasonic{BricktronicsShield::SENSOR_4};
 
 void setup() {
-  Serial.begin(9600);
-  brick.begin();
-  left_motor.begin();
-  right_motor.begin();
+  BricktronicsShield::begin();
+  left.begin();
+  right.begin();
   ultrasonic.begin();
 }
 
 void loop() {
   auto distance = ultrasonic.getDistance();
+  
   if(distance == 255) {
-    left_motor.stop();
-    right_motor.stop();
+    left.brake();
+    right.brake();
   } else if(distance > 30) {
-    left_motor.set_speed(255);
-    right_motor.set_speed(255);
+    left.setFixedDrive(-150);
+    right.setFixedDrive(-150);
   } else if(distance < 25) {
-    left_motor.set_speed(-255);
-    right_motor.set_speed(-255);
+    left.setFixedDrive(150);
+    right.setFixedDrive(150);
   } else {
-    left_motor.stop();
-    right_motor.stop();
+    left.brake();
+    right.brake();
   }
 }
