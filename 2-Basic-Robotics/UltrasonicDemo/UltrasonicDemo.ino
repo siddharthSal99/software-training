@@ -1,13 +1,14 @@
+// Import library definitions from header files
 #include <Wire.h>
-
 #include <Ultrasonic.h>
 #include <Motor.h>
 #include <Bricktronics.h>
 
+// Declare global variables
 Bricktronics brick;
-Motor left_motor(&brick, 1);
-Motor right_motor(&brick, 2);
-Ultrasonic ultrasonic(&brick, 4);
+Motor left_motor{&brick, 1};
+Motor right_motor{&brick, 2};
+Ultrasonic ultrasonic{&brick, 4};
 
 void setup() {
   Serial.begin(9600);
@@ -18,7 +19,7 @@ void setup() {
 }
 
 void loop() {
-  unsigned char distance = ultrasonic.getDistance();
+  auto distance = ultrasonic.getDistance();
   if(distance == 255) {
     left_motor.stop();
     right_motor.stop();
