@@ -1,7 +1,5 @@
 #include <iostream>
 
-using namespace std;
-
 const unsigned char data[] = {
     10, 32, 32, 32, 32, 32, 32, 32, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 32,
     32, 63, 63, 63, 63, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
@@ -37,12 +35,18 @@ const unsigned char data[] = {
 
 int main() {
 
-    cout << "Let's go tech!" << endl;
-    cout << 2015 << endl;
+    std::cout << "Let's go tech!" << std::endl;
+    std::cout << 2015 << std::endl;
 
     for(auto c : data) {
-        cout << c;
+        std::cout << c;
     }
+    
+    int x = 0;
+    
+    std::cin >> x;
+    
+    std::cout << (x + 2) << std::endl;
     
     return 0;
 }
