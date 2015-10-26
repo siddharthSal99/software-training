@@ -32,3 +32,6 @@
 
 # CLion Files
 .idea
+
+# Windows thumbnail files
+*/Thumbs.db
